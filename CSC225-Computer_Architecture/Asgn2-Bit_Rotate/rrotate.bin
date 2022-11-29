@@ -1,0 +1,20 @@
+; Right-rotates the bits of the value at 0x3050 once.
+; CSC 225, Assignment 2
+; Given code, Winter '22
+
+0011 0000 0000 0000     ; Start at 0x3000.
+0010 100 0 0100 1111    ; x3001 Load contents of x3050 into R4
+0101 101 101 1 00000    ; x3002 Clear R5
+0001 101 101 1 01111    ; x3003 ADD 15 to R5. Creates a counter in R5 starting at 15
+0101 011 011 1 00000    ; x3004 Clear R3
+0101 001 001 1 00000    ; x3005 Clear R1
+0001 001 001 0 00 100   ; x3006 ADD R4 + R1 (empty)
+0000 011 0 0000 0001    ; x3007 If the contents are positive (have a 0 in the msb) skip add bit to the end of r3
+0001 011 011 1 00001    ; x3008 ADD R3 + #1 switches 1s bit in original to 1 if there is a 1 in the msb of original number
+0001 010 001 0 00 001   ; x3009 ADD R1 + R1 store into R2
+0001 100 011 0 00 010   ; x300A ADD R3 + R2 store into R4
+0011 011 001001010      ; x300B Store contents of r3 into R4
+0001 101 101 1 11111    ; x300C subtract 1 from R5 Counter
+0000 001 1 1111 0110    ; x300D loop back to MEM x3003 (PC x3004)
+0011 100 0 0100 0011    ; x300E store contents of R4 into MEM x3051
+1111 0000 00100101      ; x300F HALT     
